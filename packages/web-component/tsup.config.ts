@@ -8,5 +8,6 @@ export default defineConfig({
   sourcemap: true,
   treeshake: true,
   splitting: false,
-  external: ["@branch-beacon/core"],
+  // @branch-beacon/core is private — bundle it in.
+  noExternal: ["@branch-beacon/core"],
 });

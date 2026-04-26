@@ -2,8 +2,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { useBranchInfo } from "./useBranchInfo.js";
 
-// Minimal fetch mock — switches per-test to control responses without
-// MSW overhead. The integration test (BranchIndicator.test.tsx) uses MSW.
 type FetchMock = ReturnType<typeof vi.fn>;
 let fetchMock: FetchMock;
 
@@ -13,8 +11,10 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  vi.unstubAllGlobals();
   vi.useRealTimers();
+  vi.clearAllTimers();
+  vi.unstubAllGlobals();
+  vi.restoreAllMocks();
 });
 
 const okResponse = (branch: string | null) =>
@@ -30,9 +30,7 @@ describe("useBranchInfo", () => {
 
     const { result } = renderHook(() => useBranchInfo());
 
-    await waitFor(() => {
-      expect(result.current.loading).toBe(false);
-    });
+    await waitFor(() => expect(result.current.loading).toBe(false));
     expect(result.current.branch).toBe("feat/test");
     expect(result.current.kind).toBe("feat");
     expect(result.current.error).toBeNull();
@@ -61,9 +59,7 @@ describe("useBranchInfo", () => {
 
     const { result } = renderHook(() => useBranchInfo());
 
-    await waitFor(() => {
-      expect(result.current.loading).toBe(false);
-    });
+    await waitFor(() => expect(result.current.loading).toBe(false));
     expect(result.current.branch).toBeNull();
     expect(result.current.error?.message).toBe("network down");
   });
@@ -77,15 +73,13 @@ describe("useBranchInfo", () => {
 
     const { result } = renderHook(() => useBranchInfo());
 
-    await waitFor(() => {
-      expect(result.current.loading).toBe(false);
-    });
+    await waitFor(() => expect(result.current.loading).toBe(false));
     expect(result.current.branch).toBeNull();
     expect(result.current.error?.message).toBe("HTTP 500");
   });
 
   it("polls every pollMs ms when pollMs > 0", async () => {
-    vi.useFakeTimers();
+    vi.useFakeTimers({ shouldAdvanceTime: true });
     fetchMock
       .mockResolvedValueOnce(okResponse("main"))
       .mockResolvedValueOnce(okResponse("feat/x"))
@@ -107,10 +101,12 @@ describe("useBranchInfo", () => {
   });
 
   it("does not poll when pollMs is 0 (default)", async () => {
-    vi.useFakeTimers();
+    vi.useFakeTimers({ shouldAdvanceTime: true });
     fetchMock.mockResolvedValue(okResponse("main"));
 
-    renderHook(() => useBranchInfo());
+    const { result } = renderHook(() => useBranchInfo());
+
+    await waitFor(() => expect(result.current.branch).toBe("main"));
 
     await act(async () => {
       await vi.advanceTimersByTimeAsync(10_000);
@@ -119,17 +115,23 @@ describe("useBranchInfo", () => {
   });
 
   it("aborts in-flight fetch on unmount", async () => {
-    let signal: AbortSignal | undefined;
+    let capturedSignal: AbortSignal | undefined;
     fetchMock.mockImplementation((_url: string, init?: RequestInit) => {
-      signal = init?.signal ?? undefined;
+      capturedSignal = init?.signal ?? undefined;
+      // Never-resolving promise simulates an in-flight fetch.
       return new Promise(() => {
-        // never resolves — simulates a slow request
+        /* */
       });
     });
 
     const { unmount } = renderHook(() => useBranchInfo());
+
+    // Wait for the effect to fire and call fetch — useEffect runs in a
+    // microtask after render, so we must yield before unmount.
+    await waitFor(() => expect(fetchMock).toHaveBeenCalled());
+
     unmount();
-    expect(signal?.aborted).toBe(true);
+    expect(capturedSignal?.aborted).toBe(true);
   });
 
   it("falls back to 'other' kind when branch is null", async () => {

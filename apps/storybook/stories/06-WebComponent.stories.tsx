@@ -54,8 +54,10 @@ const WebComponentDemo: React.FC<WebComponentArgs> = (args) => {
   );
 };
 
-declare global {
-  // Lets TS accept <branch-indicator> as JSX without a global type extension.
+// React 19's JSX runtime nests the IntrinsicElements interface inside the
+// "react" module's JSX namespace. Augmenting it here lets <branch-indicator>
+// type-check without polluting the global JSX namespace.
+declare module "react" {
   namespace JSX {
     interface IntrinsicElements {
       "branch-indicator": React.DetailedHTMLProps<
