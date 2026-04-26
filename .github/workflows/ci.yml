@@ -1,0 +1,43 @@
+# CI workflow.
+# All `run:` steps below use static commands — no interpolation of
+# untrusted user input (no github.event.*.title/body/etc. in shell).
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Type check
+        run: pnpm typecheck
+
+      - name: Build packages
+        run: pnpm build
+
+      - name: Verify "use client" directive survives bundling
+        run: pnpm verify-use-client
+
+      - name: Run tests
+        run: pnpm test
+
+      - name: Build Storybook (compile smoke test)
+        run: pnpm storybook:build

@@ -1,0 +1,3 @@
+# mockServiceWorker.js will be vendored here by `npx msw init public/ --save`
+# during local setup. The file is intentionally not committed before that
+# step is run for the first time.

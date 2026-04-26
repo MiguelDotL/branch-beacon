@@ -1,0 +1,52 @@
+{
+  "name": "branch-beacon-element",
+  "version": "0.1.0",
+  "description": "Vanilla Web Component version of branch-beacon. Drop-in <branch-indicator> custom element for any framework or plain HTML.",
+  "keywords": [
+    "git",
+    "branch",
+    "indicator",
+    "dev-tools",
+    "web-component",
+    "custom-element"
+  ],
+  "author": "Miguel Lozano",
+  "license": "MIT",
+  "homepage": "https://github.com/MiguelDotL/branch-beacon",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MiguelDotL/branch-beacon.git",
+    "directory": "packages/web-component"
+  },
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": {
+        "import": "./dist/index.d.ts",
+        "require": "./dist/index.d.cts"
+      },
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@branch-beacon/core": "workspace:*"
+  },
+  "devDependencies": {
+    "jsdom": "^25.0.1",
+    "tsup": "^8.3.0",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.4"
+  }
+}
