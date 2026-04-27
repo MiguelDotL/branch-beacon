@@ -180,7 +180,7 @@ The default classifier maps:
 | Pattern | Kind | Risk | Default color | Sample |
 |---|---|---|---|---|
 | `main`, `master`, `release/*` | `main` | highest (protected) | rose | ![](./assets/color-main.png) |
-| `dev`, `develop` | `dev` | medium | amber | ![](./assets/color-dev.png) |
+| `dev`, `develop`, `development`, `staging` | `dev` | medium | amber | ![](./assets/color-dev.png) |
 | `feat/*` | `feat` | safe iteration | emerald | ![](./assets/color-feat.png) |
 | `fix/*`, `hotfix/*` | `fix` | bug work | orange | ![](./assets/color-fix.png) |
 | anything else | `other` | neutral | gray | ![](./assets/color-other.png) |
@@ -241,6 +241,8 @@ app.get("/api/dev/git-branch", (_req, res) => {
 ## Contributing
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md). PRs welcome; the code-quality bar is documented in [PLAN.md](./PLAN.md#engineering-quality-bar).
+
+Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/) — see [CONTRIBUTING.md#commit-conventions](./CONTRIBUTING.md#commit-conventions) for the prefix list.
 
 ## License
 
