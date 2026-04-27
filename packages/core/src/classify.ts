@@ -11,20 +11,20 @@ export type Classifier = (branch: string) => BranchKind;
 // Each pattern is anchored — no fuzzy matching. The order matters: more
 // specific prefixes (release/, hotfix/) come before broader ones.
 const PROTECTED = /^(main|master|release\/.+)$/;
-const STAGING = /^(dev|develop)$/;
+const STAGING = /^(dev|develop|development|staging)$/;
 const FEATURE = /^feat\//;
 const BUGFIX = /^(fix|hotfix)\//;
 
 /**
  * Default branch classifier.
  *
- * | Pattern                         | Kind   | Risk     |
- * |---------------------------------|--------|----------|
- * | `main`, `master`, `release/...` | `main` | highest  |
- * | `dev`, `develop`                | `dev`  | medium   |
- * | `feat/...`                      | `feat` | safe     |
- * | `fix/...`, `hotfix/...`         | `fix`  | bug-work |
- * | anything else (incl. `chore/`)  | `other`| neutral  |
+ * | Pattern                                    | Kind   | Risk     |
+ * |--------------------------------------------|--------|----------|
+ * | `main`, `master`, `release/...`            | `main` | highest  |
+ * | `dev`, `develop`, `development`, `staging` | `dev`  | medium   |
+ * | `feat/...`                                 | `feat` | safe     |
+ * | `fix/...`, `hotfix/...`                    | `fix`  | bug-work |
+ * | anything else (incl. `chore/`)             | `other`| neutral  |
  *
  * Risk-inverted because the indicator's UI colors protected branches in
  * alarming hues — accidentally committing to `main` should look scary.

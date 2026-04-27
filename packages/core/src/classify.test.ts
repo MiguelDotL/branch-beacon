@@ -19,6 +19,8 @@ describe("defaultClassify", () => {
     // Staging
     ["dev", "dev"],
     ["develop", "dev"],
+    ["development", "dev"],
+    ["staging", "dev"],
 
     // Feature work
     ["feat/foo", "feat"],
@@ -54,6 +56,8 @@ describe("strictClassify", () => {
   it("falls through for synonyms that defaultClassify accepts", () => {
     expect(strictClassify("master")).toBe("other");
     expect(strictClassify("develop")).toBe("other");
+    expect(strictClassify("development")).toBe("other");
+    expect(strictClassify("staging")).toBe("other");
     expect(strictClassify("release/x")).toBe("other");
     expect(strictClassify("hotfix/x")).toBe("other");
   });
