@@ -13,7 +13,7 @@ const meta = {
   argTypes: sharedArgTypes,
   args: { shape: "svg", markerSize: 28, glow: true },
   parameters: {
-    msw: { handlers: [mockBranch("feat/realistic")] },
+    msw: { handlers: [mockBranch("feat/your-app")] },
     layout: "fullscreen",
   },
 } satisfies Meta<typeof BranchIndicator>;
@@ -55,26 +55,16 @@ export const SocialCard: Story = {
       </div>
       <div
         style={{
-          fontSize: 22,
-          letterSpacing: "0.18em",
-          textTransform: "uppercase",
+          fontSize: 20,
           color: "#9ca3af",
-        }}
-      >
-        branch-beacon
-      </div>
-      <div
-        style={{
-          fontSize: 18,
-          color: "#6b7280",
-          maxWidth: 720,
+          maxWidth: 900,
           textAlign: "center",
-          lineHeight: 1.5,
+          lineHeight: 1.6,
         }}
       >
-        Drop-in git branch indicator for development dashboards.
+        Drop-in git branch indicator. Risk-inverted colors.
         <br />
-        Risk-inverted colors. React + Web Component. Hidden in production.
+        React + Web Component. Hidden in production.
       </div>
     </div>
   ),
