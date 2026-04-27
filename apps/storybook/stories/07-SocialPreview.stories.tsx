@@ -66,15 +66,16 @@ export const SocialCard: Story = {
       <div
         style={{
           fontSize: 20,
-          color: "#6b7280",
-          maxWidth: 900,
+          color: "#9ca3af",
+          maxWidth: 940,
           textAlign: "center",
           lineHeight: 1.6,
         }}
       >
-        Drop-in git branch indicator. Risk-inverted colors.
-        <br />
-        React + Web Component. Hidden in production.
+        A friendly little git branch indicator for the corner of your
+        development dashboard. Picks up your project's colors automatically,
+        with a risk-inverted palette so protected branches look alarming
+        and working branches feel safe.
       </div>
     </div>
   ),
