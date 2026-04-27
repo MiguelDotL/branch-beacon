@@ -64,4 +64,25 @@ describe("<BranchIndicator />", () => {
     const wrapper = container.querySelector("span");
     expect(wrapper?.getAttribute("style")).toMatch(/color:\s*var\(--branch-feat/);
   });
+
+  it("applies drop-shadow filter when glow={true}", async () => {
+    process.env.NODE_ENV = "development";
+    const { container } = render(<BranchIndicator shape="dot" glow />);
+    await waitFor(() => screen.getByText("feat/integration"));
+    expect(container.innerHTML).toContain("drop-shadow");
+  });
+
+  it("renders the icon prop instead of the built-in shape", async () => {
+    process.env.NODE_ENV = "development";
+    render(
+      <BranchIndicator
+        icon={<span data-testid="custom-icon">★</span>}
+        shape="svg"
+      />,
+    );
+    await waitFor(() => screen.getByText("feat/integration"));
+    expect(screen.getByTestId("custom-icon")).toBeDefined();
+    // No SVG path from the default marker should be present.
+    expect(document.querySelector("svg path")).toBeNull();
+  });
 });

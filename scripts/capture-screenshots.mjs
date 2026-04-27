@@ -53,10 +53,19 @@ const SHOTS = [
   // Customization showcases
   { file: "customization-colors.png", id: "branchindicator-04-customization--custom-colors" },
   { file: "customization-icon-only.png", id: "branchindicator-04-customization--icon-only" },
+  { file: "customization-custom-icon.png", id: "branchindicator-04-customization--custom-icon" },
+  { file: "customization-glow.png", id: "branchindicator-04-customization--glow" },
 
   // Realistic placements
   { file: "placement-sidebar.png", id: "branchindicator-05-integration--in-sidebar", selector: "aside" },
   { file: "placement-badge.png", id: "branchindicator-05-integration--inside-badge" },
+
+  // GitHub social-preview composition (1280×640 design canvas)
+  {
+    file: "social-preview.png",
+    id: "branchindicator-07-social-preview--social-card",
+    selector: "[data-social-card]",
+  },
 ];
 
 const iframeUrl = (id) =>

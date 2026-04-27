@@ -48,12 +48,19 @@ Defaults: SVG marker, default classifier, default colors, no polling, `/api/dev/
 
 ```tsx
 <BranchIndicator
-  shape="led"
+  shape="dot"
+  glow
   markerSize={10}
   colors={{ main: "var(--my-danger)" }}
   pollMs={30_000}
   className="text-xs uppercase"
 />
+```
+
+`glow` works on every shape (drop-shadow follows the visible pixels, not the bounding box). Pass any node to `icon` to override the default glyph entirely:
+
+```tsx
+<BranchIndicator icon={<MyLogo width={12} height={12} />} />
 ```
 
 ### Marker shapes
@@ -74,8 +81,10 @@ Full prop list:
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `endpoint` | `string` | `"/api/dev/git-branch"` | Backend URL |
-| `shape` | `"svg" \| "icon" \| "dot" \| "square" \| "led" \| "bar" \| "pill" \| "none"` | `"svg"` | |
+| `shape` | `"svg" \| "icon" \| "dot" \| "square" \| "led" \| "bar" \| "pill" \| "none"` | `"svg"` | `"led"` is a preset for `dot` + `glow` |
 | `markerSize` | `number` | `8` | Pixel size for geometric markers |
+| `glow` | `boolean` | `false` | Apply CSS `drop-shadow` to the marker; tune via `--branch-glow` |
+| `icon` | `ReactNode` | — | Override the default glyph; `shape` is ignored when set |
 | `iconOnly` | `boolean` | `false` | Hide the branch label |
 | `colors` | `Partial<Record<BranchKind, string>>` | — | Per-kind overrides; any CSS color string |
 | `classify` | `(branch: string) => BranchKind` | `defaultClassify` | Or use `strictClassify` / `fuzzyClassify` |

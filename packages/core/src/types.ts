@@ -7,7 +7,8 @@ export type BranchKind = "main" | "dev" | "feat" | "fix" | "other";
 /**
  * Visual marker shape rendered alongside (or in place of) the branch name.
  * - `dot` / `square` / `bar`: solid geometric markers, color = resolved branch color
- * - `led`: square with glow, evokes a HUD status light
+ * - `led`: round dot with glow — preset alias for `shape="dot"` + `glow={true}`,
+ *   evokes a HUD status light
  * - `icon`: Unicode ⎇ glyph (renders inconsistently across fonts)
  * - `svg`: inline SVG git-branch icon (default — always crisp)
  * - `pill`: rounded background pill, no marker; the label sits inside

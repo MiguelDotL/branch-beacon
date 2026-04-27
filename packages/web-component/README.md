@@ -27,13 +27,30 @@ For React, use [`branch-beacon`](https://www.npmjs.com/package/branch-beacon) in
 ```html
 <branch-indicator
   endpoint="/api/dev/git-branch"
-  shape="led"
+  shape="dot"
   marker-size="10"
+  glow
   poll-ms="30000"
   enabled="true"
   colors='{"main":"#ff0066"}'
 ></branch-indicator>
 ```
+
+`glow` (boolean attribute) applies a CSS `drop-shadow` to the marker — works on every shape including the inline SVG glyph. Tune the radius via `--branch-glow`.
+
+### Custom icon
+
+Project content into the `icon` slot to replace the built-in glyph entirely:
+
+```html
+<branch-indicator>
+  <svg slot="icon" viewBox="0 0 16 16" fill="currentColor" width="16" height="16">
+    <!-- your icon here -->
+  </svg>
+</branch-indicator>
+```
+
+`shape` is ignored when slotted content is present; `glow` and color theming still apply.
 
 Full attribute reference, theming guide (CSS custom properties, `::part()`), and live Storybook demo: **[github.com/MiguelDotL/branch-beacon](https://github.com/MiguelDotL/branch-beacon)**
 

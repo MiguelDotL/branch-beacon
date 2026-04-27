@@ -9,6 +9,8 @@ import type { BranchIndicatorProps } from "./types.js";
 const DEFAULT_SHAPE = "svg" as const;
 const DEFAULT_MARKER_SIZE = 8;
 
+const GLOW_FILTER = "drop-shadow(0 0 var(--branch-glow, 8px) currentColor)";
+
 /**
  * Drop-in git branch indicator for development dashboards.
  *
@@ -26,6 +28,8 @@ export const BranchIndicator = (props: BranchIndicatorProps) => {
     endpoint,
     shape = DEFAULT_SHAPE,
     markerSize = DEFAULT_MARKER_SIZE,
+    glow = false,
+    icon,
     iconOnly = false,
     colors,
     classify,
@@ -69,6 +73,26 @@ export const BranchIndicator = (props: BranchIndicatorProps) => {
   if (!shouldRender(enabled)) return null;
   if (branch === null) return null;
 
+  // Custom icon overrides shape entirely. Wrap it so the glow filter
+  // (when enabled) follows the user's icon pixels just like the built-in
+  // shapes — same drop-shadow expression, same currentColor inheritance.
+  const marker =
+    icon !== undefined ? (
+      <span
+        aria-hidden
+        style={{
+          display: "inline-flex",
+          flexShrink: 0,
+          alignItems: "center",
+          ...(glow ? { filter: GLOW_FILTER } : null),
+        }}
+      >
+        {icon}
+      </span>
+    ) : (
+      renderMarker(shape, markerSize, glow)
+    );
+
   return (
     <span
       className={className}
@@ -76,7 +100,7 @@ export const BranchIndicator = (props: BranchIndicatorProps) => {
       style={{ color, ...style }}
     >
       <span style={innerStyle}>
-        {renderMarker(shape, markerSize)}
+        {marker}
         {!iconOnly && <span>{branch}</span>}
       </span>
     </span>

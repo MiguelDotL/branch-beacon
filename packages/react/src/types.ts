@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import type { BranchKind, BranchShape, Classifier } from "@branch-beacon/core";
 
 /**
@@ -24,9 +24,12 @@ export interface BranchIndicatorProps {
    *
    * - `"svg"` — inline SVG git-branch icon (default; always crisp)
    * - `"icon"` — Unicode `⎇` glyph (renders inconsistently across fonts)
-   * - `"dot"` / `"square"` / `"led"` / `"bar"` — geometric markers
+   * - `"dot"` / `"square"` / `"bar"` — geometric markers
+   * - `"led"` — preset alias for `dot` + `glow`; round-with-glow status light
    * - `"pill"` — wraps the label in a tinted background pill
    * - `"none"` — label only, no marker
+   *
+   * Ignored when {@link BranchIndicatorProps.icon} is provided.
    *
    * @default "svg"
    */
@@ -38,6 +41,33 @@ export interface BranchIndicatorProps {
    * @default 8
    */
   markerSize?: number;
+
+  /**
+   * Apply a CSS `drop-shadow` glow to the marker. Works on every shape
+   * including `svg` and `icon` (the glow follows the visible pixels, not
+   * the bounding box). Tune the radius with the `--branch-glow` CSS var.
+   *
+   * `shape="led"` implies `glow={true}` and remains a convenience preset.
+   *
+   * @default false
+   */
+  glow?: boolean;
+
+  /**
+   * Override the default marker entirely with custom content. Any node —
+   * SVG component, `<img>`, emoji wrapper — replaces the built-in shape.
+   * `shape` is ignored when `icon` is provided. `iconOnly`, `glow`,
+   * `colors`, and the production gate still apply.
+   *
+   * Use `currentColor` in custom SVGs so the indicator's resolved color
+   * still flows through.
+   *
+   * @example
+   * ```tsx
+   * <BranchIndicator icon={<MyLogo width={12} height={12} />} />
+   * ```
+   */
+  icon?: ReactNode;
 
   /**
    * Hide the branch text label, render only the marker.

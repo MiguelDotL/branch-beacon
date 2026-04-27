@@ -46,12 +46,19 @@ Defaults: SVG marker, default classifier, default colors, no polling, `/api/dev/
 
 ```tsx
 <BranchIndicator
-  shape="led"
+  shape="dot"
+  glow
   markerSize={10}
   colors={{ main: "var(--my-danger)" }}
   pollMs={30_000}
   className="text-xs uppercase"
 />
+```
+
+`glow` works on every shape — `drop-shadow` follows the visible pixels, even on SVG. Tune the radius via `--branch-glow`. Pass any node to `icon` to override the default glyph entirely:
+
+```tsx
+<BranchIndicator icon={<MyLogo width={12} height={12} />} />
 ```
 
 | `shape` | Render |

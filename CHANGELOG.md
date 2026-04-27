@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] — Extensibility (glow modifier, custom icons, led redesign)
+
+### Added
+
+- **`glow` prop / `glow` attribute** — orthogonal modifier that applies a CSS `drop-shadow` to the marker. Works on every shape including SVG and Unicode glyphs (the glow follows the visible pixels, not the bounding box). Tune the radius via the `--branch-glow` CSS variable.
+- **Custom icon escape hatch** — replace the default Octicon git-branch glyph with arbitrary content:
+  - React: new `icon?: ReactNode` prop. When set, `shape` is ignored.
+  - Web component: new `<slot name="icon">` for projecting custom HTML/SVG.
+
+### Changed
+
+- **`shape="led"` is now round.** Previously `led` rendered as a square with a `box-shadow` glow, which violated the mental model — every developer expects an LED to be round. `led` is now a preset alias for `dot + glow`, matching what the name implies. **Visual breaking change** for anyone using `shape="led"` today; if you needed the square-with-glow look, switch to `shape="square" glow`.
+- Glow implementation switched from `box-shadow` to `filter: drop-shadow`, so it now works correctly on SVG paths and Unicode glyphs (where `box-shadow` only glowed the bounding rectangle).
+
 ## [0.1.1] — Visual assets in READMEs
 
 ### Added
@@ -27,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Reference backend handlers for Express, FastAPI, Flask, and Go.
 - Storybook with every prop wired to a control.
 
-[Unreleased]: https://github.com/MiguelDotL/branch-beacon/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/MiguelDotL/branch-beacon/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/MiguelDotL/branch-beacon/releases/tag/v0.1.2
 [0.1.1]: https://github.com/MiguelDotL/branch-beacon/releases/tag/v0.1.1
 [0.1.0]: https://github.com/MiguelDotL/branch-beacon/releases/tag/v0.1.0

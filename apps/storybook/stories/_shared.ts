@@ -36,6 +36,14 @@ export const sharedArgTypes = {
     control: "boolean" as const,
     description: "Hide the branch text, render the marker only.",
   },
+  glow: {
+    control: "boolean" as const,
+    description:
+      "Apply a CSS drop-shadow glow to the marker. Works on every shape.",
+  },
+  icon: {
+    table: { disable: true },
+  },
   pollMs: {
     control: { type: "number" as const, min: 0, step: 500 },
     description: "Poll the endpoint every N ms (0 = fetch once).",

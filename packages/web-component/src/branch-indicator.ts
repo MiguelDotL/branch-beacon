@@ -18,6 +18,8 @@ const SVG_VIEWBOX = "0 0 16 16";
 const SVG_PATH =
   "M9.5 3.25a2.25 2.25 0 1 1 3 2.122V6A2.5 2.5 0 0 1 10 8.5H6a1 1 0 0 0-1 1v1.128a2.251 2.251 0 1 1-1.5 0V5.372a2.25 2.25 0 1 1 1.5 0v1.836A2.493 2.493 0 0 1 6 7h4a1 1 0 0 0 1-1v-.628A2.25 2.25 0 0 1 9.5 3.25Zm-6 0a.75.75 0 1 0 1.5 0 .75.75 0 0 0-1.5 0Zm8.25-.75a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5ZM4.25 12a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Z";
 
+const GLOW_FILTER = "drop-shadow(0 0 var(--branch-glow, 8px) currentColor)";
+
 // All shapes the React component supports — kept in lockstep with markers.tsx.
 const SHAPES: ReadonlySet<BranchShape> = new Set([
   "dot",
@@ -66,10 +68,19 @@ const parseColors = (
  *   - `endpoint`        (default: `"/api/dev/git-branch"`)
  *   - `shape`           (default: `"svg"`; one of dot|square|led|icon|svg|pill|bar|none)
  *   - `marker-size`     (default: `8`)
+ *   - `glow`            (presence ⇒ true; default: false)
  *   - `icon-only`       (presence ⇒ true; default: false)
  *   - `poll-ms`         (default: `0`)
  *   - `enabled`         (`"true"` | `"false"`; default: auto-hide in production)
  *   - `colors`          (JSON-encoded `{ main, dev, feat, fix, other }`)
+ *
+ * Custom icon escape hatch: project content into the `icon` slot to
+ * replace the built-in marker entirely. `shape` is ignored in that case;
+ * `glow` and color theming still apply.
+ *
+ *   <branch-indicator>
+ *     <svg slot="icon" viewBox="0 0 16 16" fill="currentColor">…</svg>
+ *   </branch-indicator>
  *
  * Color theming via CSS custom properties on the host:
  *   `branch-indicator { --branch-main: #ff0066; }` flows through the
@@ -83,6 +94,7 @@ export class BranchIndicatorElement extends HTMLElement {
       "endpoint",
       "shape",
       "marker-size",
+      "glow",
       "icon-only",
       "poll-ms",
       "enabled",
@@ -101,6 +113,7 @@ export class BranchIndicatorElement extends HTMLElement {
   private root: ShadowRoot;
   private wrapper: HTMLSpanElement;
   private markerHost: HTMLSpanElement;
+  private markerDefault: HTMLSpanElement;
   private label: HTMLSpanElement;
   private styleEl: HTMLStyleElement;
 
@@ -119,7 +132,11 @@ export class BranchIndicatorElement extends HTMLElement {
         border-radius: 999px;
         background-color: color-mix(in srgb, currentColor 8%, transparent);
       }
-      [part="marker"] { display: inline-block; flex-shrink: 0; }
+      [part="marker"] {
+        display: inline-flex;
+        flex-shrink: 0;
+        align-items: center;
+      }
     `;
 
     this.wrapper = document.createElement("span");
@@ -128,6 +145,16 @@ export class BranchIndicatorElement extends HTMLElement {
     this.markerHost = document.createElement("span");
     this.markerHost.setAttribute("part", "marker");
     this.markerHost.setAttribute("aria-hidden", "true");
+
+    // Slot enables custom icon override: <svg slot="icon">…</svg> in the
+    // light DOM replaces the fallback. The fallback span (`markerDefault`)
+    // is what we manipulate for built-in shapes.
+    const slot = document.createElement("slot");
+    slot.setAttribute("name", "icon");
+    this.markerDefault = document.createElement("span");
+    this.markerDefault.setAttribute("aria-hidden", "true");
+    slot.append(this.markerDefault);
+    this.markerHost.append(slot);
 
     this.label = document.createElement("span");
     this.label.setAttribute("part", "label");
@@ -186,36 +213,42 @@ export class BranchIndicatorElement extends HTMLElement {
       Number(this.getAttribute("marker-size") ?? String(DEFAULT_MARKER_SIZE)) ||
       DEFAULT_MARKER_SIZE;
     const iconOnly = this.hasAttribute("icon-only");
+    const glow = this.hasAttribute("glow") || shape === "led";
     const colors = parseColors(this.getAttribute("colors"));
 
     this.style.color = colorFor(this.kind, colors);
     this.title = `Current git branch: ${this.branch}`;
 
     this.wrapper.classList.toggle("pill", shape === "pill");
-    this.markerHost.replaceChildren();
-    this.markerHost.removeAttribute("style");
-    this.renderMarker(shape, markerSize);
+
+    // Glow goes on markerHost so it covers BOTH the fallback default
+    // marker AND any slotted custom icon — uniform behavior.
+    this.markerHost.style.filter = glow ? GLOW_FILTER : "";
+
+    // Reset and re-render the default marker (the slot fallback).
+    this.markerDefault.replaceChildren();
+    this.markerDefault.removeAttribute("style");
+    this.renderDefaultMarker(shape, markerSize);
 
     this.label.textContent = iconOnly ? "" : this.branch;
     this.label.style.display = iconOnly ? "none" : "";
   }
 
-  private renderMarker(shape: BranchShape, size: number): void {
-    const m = this.markerHost;
+  private renderDefaultMarker(shape: BranchShape, size: number): void {
+    const m = this.markerDefault;
     switch (shape) {
       case "dot":
-        m.style.cssText = `width:${size}px;height:${size}px;border-radius:50%;background:currentColor`;
+      case "led":
+        // led is dot+glow; glow is applied at markerHost level above.
+        m.style.cssText = `width:${size}px;height:${size}px;border-radius:50%;background:currentColor;display:inline-block`;
         return;
       case "square":
-        m.style.cssText = `width:${size}px;height:${size}px;background:currentColor`;
-        return;
-      case "led":
-        m.style.cssText = `width:${size}px;height:${size}px;background:currentColor;box-shadow:0 0 var(--branch-glow,8px) currentColor`;
+        m.style.cssText = `width:${size}px;height:${size}px;background:currentColor;display:inline-block`;
         return;
       case "bar": {
         const w = Math.max(2, Math.round(size / 4));
         const h = Math.round(size * 1.6);
-        m.style.cssText = `width:${w}px;height:${h}px;background:currentColor`;
+        m.style.cssText = `width:${w}px;height:${h}px;background:currentColor;display:inline-block`;
         return;
       }
       case "icon":

@@ -10,6 +10,11 @@ const baseMarkerStyle: CSSProperties = {
   background: "currentColor",
 };
 
+// drop-shadow follows the marker's visible pixels (vs. box-shadow which
+// glows the bounding box). Works uniformly across solid shapes AND SVG
+// paths — same expression, different glyph.
+const GLOW_FILTER = "drop-shadow(0 0 var(--branch-glow, 8px) currentColor)";
+
 // Octicon git-branch (16x16). MIT, GitHub. Inlined to keep the bundle
 // dependency-free — no @octicons/react, no SVG sprite plumbing.
 const SVG_VIEWBOX = "0 0 16 16";
@@ -20,35 +25,25 @@ const SVG_PATH =
  * Render the marker shape. Pure: input → JSX, no hooks, no I/O.
  * Color comes from the parent wrapper via `currentColor`.
  *
+ * `led` is a preset for `dot + glow` — kept as a recognizable shape name
+ * for the common HUD-status-light aesthetic.
+ *
  * Returns `null` for shapes that don't have a separate marker
  * (`"pill"` carries its color via background; `"none"` is label-only).
  */
 export const renderMarker = (
   shape: BranchShape,
   size: number,
+  glow: boolean = false,
 ): JSX.Element | null => {
+  // led = dot with glow forced on. Treating it as a preset keeps the
+  // shape name useful for users who think "LED" without having to know
+  // the dot+glow combo.
+  const effectiveGlow = glow || shape === "led";
+  const glowStyle: CSSProperties = effectiveGlow ? { filter: GLOW_FILTER } : {};
+
   switch (shape) {
     case "dot":
-      return (
-        <span
-          aria-hidden
-          style={{
-            ...baseMarkerStyle,
-            width: size,
-            height: size,
-            borderRadius: "50%",
-          }}
-        />
-      );
-
-    case "square":
-      return (
-        <span
-          aria-hidden
-          style={{ ...baseMarkerStyle, width: size, height: size }}
-        />
-      );
-
     case "led":
       return (
         <span
@@ -57,8 +52,21 @@ export const renderMarker = (
             ...baseMarkerStyle,
             width: size,
             height: size,
-            // CSS var lets host projects tune the glow without forking colors.
-            boxShadow: "0 0 var(--branch-glow, 8px) currentColor",
+            borderRadius: "50%",
+            ...glowStyle,
+          }}
+        />
+      );
+
+    case "square":
+      return (
+        <span
+          aria-hidden
+          style={{
+            ...baseMarkerStyle,
+            width: size,
+            height: size,
+            ...glowStyle,
           }}
         />
       );
@@ -71,6 +79,7 @@ export const renderMarker = (
             ...baseMarkerStyle,
             width: Math.max(2, Math.round(size / 4)),
             height: Math.round(size * 1.6),
+            ...glowStyle,
           }}
         />
       );
@@ -79,7 +88,7 @@ export const renderMarker = (
       // Unicode ⎇ — kept for users who prefer the typographic look. SVG
       // shape is the default because ⎇ renders inconsistently across fonts
       // (some show a hollow box).
-      return <span aria-hidden>⎇</span>;
+      return <span aria-hidden style={glowStyle}>⎇</span>;
 
     case "svg":
       return (
@@ -89,7 +98,7 @@ export const renderMarker = (
           height={size}
           viewBox={SVG_VIEWBOX}
           fill="currentColor"
-          style={{ flexShrink: 0 }}
+          style={{ flexShrink: 0, ...glowStyle }}
         >
           <path d={SVG_PATH} />
         </svg>

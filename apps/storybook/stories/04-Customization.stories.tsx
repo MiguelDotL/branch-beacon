@@ -28,8 +28,34 @@ export const CustomColors: Story = {
 };
 
 export const IconOnly: Story = {
-  args: { iconOnly: true, shape: "led" },
+  args: { iconOnly: true, shape: "svg", markerSize: 20 },
   parameters: { msw: { handlers: [mockBranch("feat/icon-only")] } },
+};
+
+/**
+ * Custom icon escape hatch — pass any node via the `icon` prop to replace
+ * the built-in marker entirely. `shape` is ignored when `icon` is set,
+ * but `glow`, `colors`, and the production gate still apply.
+ */
+export const CustomIcon: Story = {
+  args: {
+    icon: (
+      <svg width={16} height={16} viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2 L14.5 9 L22 9 L16 13.5 L18 21 L12 16.5 L6 21 L8 13.5 L2 9 L9.5 9 Z" />
+      </svg>
+    ),
+  },
+  parameters: { msw: { handlers: [mockBranch("feat/custom-icon")] } },
+};
+
+/**
+ * Glow modifier — `glow={true}` applies a CSS `drop-shadow` to the
+ * marker. Works uniformly across solid shapes (dot/square/bar/led) and
+ * outlined glyphs (svg/icon). Tune the radius via `--branch-glow`.
+ */
+export const Glow: Story = {
+  args: { shape: "svg", markerSize: 16, glow: true },
+  parameters: { msw: { handlers: [mockBranch("feat/glow")] } },
 };
 
 /**

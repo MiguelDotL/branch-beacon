@@ -1,6 +1,6 @@
 {
   "name": "branch-beacon",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Drop-in git branch indicator for dev tools and dashboards. Adapts to your host project's design tokens; hides in production by default.",
   "keywords": [
     "git",
