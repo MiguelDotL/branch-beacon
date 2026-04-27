@@ -2,6 +2,8 @@
 
 Drop-in git branch indicator for dev tools and dashboards. Adapts to your project's design tokens; hides in production by default.
 
+![branch-beacon in a header](https://raw.githubusercontent.com/MiguelDotL/branch-beacon/main/assets/hero-in-header.png)
+
 ```tsx
 import { BranchIndicator } from "branch-beacon";
 
@@ -51,6 +53,24 @@ Defaults: SVG marker, default classifier, default colors, no polling, `/api/dev/
   className="text-xs uppercase"
 />
 ```
+
+| `shape` | Render |
+|---|---|
+| `"svg"` (default) | ![](https://raw.githubusercontent.com/MiguelDotL/branch-beacon/main/assets/shape-svg.png) |
+| `"icon"` | ![](https://raw.githubusercontent.com/MiguelDotL/branch-beacon/main/assets/shape-icon.png) |
+| `"dot"` | ![](https://raw.githubusercontent.com/MiguelDotL/branch-beacon/main/assets/shape-dot.png) |
+| `"led"` | ![](https://raw.githubusercontent.com/MiguelDotL/branch-beacon/main/assets/shape-led.png) |
+| `"pill"` | ![](https://raw.githubusercontent.com/MiguelDotL/branch-beacon/main/assets/shape-pill.png) |
+
+### Risk-inverted color palette
+
+| Pattern | Kind | Sample |
+|---|---|---|
+| `main`, `master`, `release/*` | `main` | ![](https://raw.githubusercontent.com/MiguelDotL/branch-beacon/main/assets/color-main.png) |
+| `dev`, `develop` | `dev` | ![](https://raw.githubusercontent.com/MiguelDotL/branch-beacon/main/assets/color-dev.png) |
+| `feat/*` | `feat` | ![](https://raw.githubusercontent.com/MiguelDotL/branch-beacon/main/assets/color-feat.png) |
+| `fix/*`, `hotfix/*` | `fix` | ![](https://raw.githubusercontent.com/MiguelDotL/branch-beacon/main/assets/color-fix.png) |
+| anything else | `other` | ![](https://raw.githubusercontent.com/MiguelDotL/branch-beacon/main/assets/color-other.png) |
 
 Full prop reference, theming guide, headless hook (`useBranchInfo`), and live Storybook demo: **[github.com/MiguelDotL/branch-beacon](https://github.com/MiguelDotL/branch-beacon)**
 

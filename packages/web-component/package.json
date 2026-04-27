@@ -1,6 +1,6 @@
 {
   "name": "branch-beacon-element",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Vanilla Web Component version of branch-beacon. Drop-in <branch-indicator> custom element for any framework or plain HTML.",
   "keywords": [
     "git",

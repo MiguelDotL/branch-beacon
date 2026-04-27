@@ -2,6 +2,8 @@
 
 Drop-in git branch indicator for dev tools and dashboards. Adapts to your project's design tokens; hides in production by default.
 
+![branch-beacon in a header](./assets/hero-in-header.png)
+
 ```tsx
 import { BranchIndicator } from "branch-beacon";
 
@@ -53,6 +55,19 @@ Defaults: SVG marker, default classifier, default colors, no polling, `/api/dev/
   className="text-xs uppercase"
 />
 ```
+
+### Marker shapes
+
+| `shape` | Render |
+|---|---|
+| `"svg"` (default) | ![](./assets/shape-svg.png) |
+| `"icon"` | ![](./assets/shape-icon.png) |
+| `"dot"` | ![](./assets/shape-dot.png) |
+| `"square"` | ![](./assets/shape-square.png) |
+| `"led"` | ![](./assets/shape-led.png) |
+| `"bar"` | ![](./assets/shape-bar.png) |
+| `"pill"` | ![](./assets/shape-pill.png) |
+| `"none"` | ![](./assets/shape-none.png) |
 
 Full prop list:
 
@@ -153,13 +168,13 @@ Partial overrides only replace what you specify — keys you skip keep their def
 
 The default classifier maps:
 
-| Pattern | Kind | Risk | Default color |
-|---|---|---|---|
-| `main`, `master`, `release/*` | `main` | highest (protected) | rose |
-| `dev`, `develop` | `dev` | medium | amber |
-| `feat/*` | `feat` | safe iteration | emerald |
-| `fix/*`, `hotfix/*` | `fix` | bug work | orange |
-| anything else | `other` | neutral | gray |
+| Pattern | Kind | Risk | Default color | Sample |
+|---|---|---|---|---|
+| `main`, `master`, `release/*` | `main` | highest (protected) | rose | ![](./assets/color-main.png) |
+| `dev`, `develop` | `dev` | medium | amber | ![](./assets/color-dev.png) |
+| `feat/*` | `feat` | safe iteration | emerald | ![](./assets/color-feat.png) |
+| `fix/*`, `hotfix/*` | `fix` | bug work | orange | ![](./assets/color-fix.png) |
+| anything else | `other` | neutral | gray | ![](./assets/color-other.png) |
 
 Drop in `strictClassify` (only literal `main`/`dev`/`feat/`/`fix/`) or `fuzzyClassify` (substring match: `production`/`staging`/`feature`/`patch`) if your conventions differ. Or pass your own:
 

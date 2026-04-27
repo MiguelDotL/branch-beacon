@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] — Visual assets in READMEs
+
+### Added
+
+- Hero screenshot, shape variants, and risk-inverted color samples embedded in the README and per-package npm pages.
+- Bug fix: removed a stray `process.env.NODE_ENV = "development"` from `apps/storybook/.storybook/preview.ts` that crashed the preview iframe in browsers (process is not defined). Doesn't affect published packages.
+
 ## [0.1.0] — Initial release
 
 ### Added
@@ -20,5 +27,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Reference backend handlers for Express, FastAPI, Flask, and Go.
 - Storybook with every prop wired to a control.
 
-[Unreleased]: https://github.com/MiguelDotL/branch-beacon/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/MiguelDotL/branch-beacon/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/MiguelDotL/branch-beacon/releases/tag/v0.1.1
 [0.1.0]: https://github.com/MiguelDotL/branch-beacon/releases/tag/v0.1.0

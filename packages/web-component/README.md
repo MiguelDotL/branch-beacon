@@ -2,6 +2,8 @@
 
 Vanilla Web Component version of [branch-beacon](https://www.npmjs.com/package/branch-beacon). Drop-in `<branch-indicator>` custom element for any framework or plain HTML.
 
+![branch-beacon in a header](https://raw.githubusercontent.com/MiguelDotL/branch-beacon/main/assets/hero-in-header.png)
+
 ```html
 <script type="module">
   import "branch-beacon-element";
