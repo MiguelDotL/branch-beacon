@@ -1,12 +1,12 @@
-import type { ComponentProps, ReactNode } from "react";
+import type { ComponentProps } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { BranchIndicator } from "branch-beacon";
 import { mockBranch, sharedArgTypes } from "./_shared.js";
 
 /**
  * 1280×640 composition for use as the GitHub repo's social-preview image.
- * Two variants share the layout — `SocialCardWhite` is monochrome,
- * `SocialCardColored` highlights the risk-inverted palette inline.
+ * The capture script clips this story at exactly 1280×640 so the rendered
+ * PNG drops straight into Settings → Social preview.
  */
 const meta = {
   title: "BranchIndicator/07 Social Preview",
@@ -22,43 +22,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Hex values mirror the package's default risk-inverted palette so the
-// inline highlights read as the same colors the indicator itself uses.
-const FEAT_GREEN = "#34d399";
-const DEV_AMBER = "#fbbf24";
-const MAIN_ROSE = "#fb7185";
-
-const Tagline = ({ colored }: { colored: boolean }): ReactNode => {
-  const safe = colored ? (
-    <span style={{ color: FEAT_GREEN }}>working branches feel safe</span>
-  ) : (
-    "working branches feel safe"
-  );
-  const standOut = colored ? (
-    <>
-      <span style={{ color: DEV_AMBER }}>protected ones</span>{" "}
-      <span style={{ color: MAIN_ROSE }}>stand out</span>
-    </>
-  ) : (
-    "protected ones stand out"
-  );
-  return (
-    <>
-      A friendly little git branch indicator
-      <br />
-      that lives in the corner of your dev client.
-      <br />
-      It's color-coded, so {safe} and
-      <br />
-      {standOut}.
-    </>
-  );
-};
-
-const SocialCard = ({
-  colored,
-  ...args
-}: { colored: boolean } & ComponentProps<typeof BranchIndicator>) => (
+const SocialCard = (args: ComponentProps<typeof BranchIndicator>) => (
   <div
     data-social-card
     style={{
@@ -107,15 +71,16 @@ const SocialCard = ({
         lineHeight: 1.6,
       }}
     >
-      <Tagline colored={colored} />
+      A friendly little git branch indicator for your dev client.
+      <br />
+      It's color-coded, so working branches feel safe and
+      <br />
+      protected ones <strong style={{ color: "#f3f4f6" }}>stand out</strong>.
     </div>
   </div>
 );
 
-export const SocialCardWhite: Story = {
-  render: (args) => <SocialCard {...args} colored={false} />,
-};
-
-export const SocialCardColored: Story = {
-  render: (args) => <SocialCard {...args} colored={true} />,
+export const SocialCardStory: Story = {
+  name: "Social Card",
+  render: (args) => <SocialCard {...args} />,
 };

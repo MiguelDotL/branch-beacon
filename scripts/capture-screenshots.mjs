@@ -60,16 +60,10 @@ const SHOTS = [
   { file: "placement-sidebar.png", id: "branchindicator-05-integration--in-sidebar", selector: "aside" },
   { file: "placement-badge.png", id: "branchindicator-05-integration--inside-badge" },
 
-  // GitHub social-preview composition (1280×640 design canvas) — two
-  // variants for selection: monochrome and colored-highlight palette.
+  // GitHub social-preview composition (1280×640 design canvas)
   {
-    file: "social-preview-white.png",
-    id: "branchindicator-07-social-preview--social-card-white",
-    selector: "[data-social-card]",
-  },
-  {
-    file: "social-preview-colored.png",
-    id: "branchindicator-07-social-preview--social-card-colored",
+    file: "social-preview.png",
+    id: "branchindicator-07-social-preview--social-card-story",
     selector: "[data-social-card]",
   },
 ];
