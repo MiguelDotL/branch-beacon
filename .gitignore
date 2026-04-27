@@ -9,3 +9,4 @@ storybook-static/
 coverage/
 *.tsbuildinfo
 .vite/
+docs/
