@@ -57,7 +57,11 @@ Defaults: SVG marker, default classifier, default colors, no polling, `/api/dev/
 />
 ```
 
-`glow` works on every shape (drop-shadow follows the visible pixels, not the bounding box). Pass any node to `icon` to override the default glyph entirely:
+`glow` works on every shape (drop-shadow follows the visible pixels, not the bounding box):
+
+![glow modifier on the SVG marker](./assets/customization-glow.png)
+
+Pass any node to `icon` to override the default glyph entirely:
 
 ```tsx
 <BranchIndicator icon={<MyLogo width={12} height={12} />} />
