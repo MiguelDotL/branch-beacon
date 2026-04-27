@@ -1,6 +1,6 @@
 # branch-beacon-element
 
-Vanilla Web Component version of [branch-beacon](https://www.npmjs.com/package/branch-beacon). Drop-in `<branch-indicator>` custom element for any framework or plain HTML.
+A friendly little git branch indicator that lives in the corner of your dev client. It's color-coded, so working branches feel safe and protected ones **stand out**. Vanilla Web Component (`<branch-indicator>`) for any framework or plain HTML — see [`branch-beacon`](https://www.npmjs.com/package/branch-beacon) for the React variant.
 
 ![branch-beacon in a header](https://raw.githubusercontent.com/MiguelDotL/branch-beacon/main/assets/hero-in-header.png)
 

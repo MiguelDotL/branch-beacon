@@ -1,6 +1,6 @@
 # branch-beacon
 
-Drop-in git branch indicator for dev tools and dashboards. Adapts to your project's design tokens; hides in production by default.
+A friendly little git branch indicator that lives in the corner of your dev client. It's color-coded, so working branches feel safe and protected ones **stand out**. Adapts to your project's design tokens automatically; hidden in production by default.
 
 ![branch-beacon in a header](https://raw.githubusercontent.com/MiguelDotL/branch-beacon/main/assets/hero-in-header.png)
 
