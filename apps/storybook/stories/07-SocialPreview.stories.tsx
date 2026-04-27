@@ -55,8 +55,18 @@ export const SocialCard: Story = {
       </div>
       <div
         style={{
-          fontSize: 20,
+          fontSize: 22,
+          letterSpacing: "0.18em",
+          textTransform: "uppercase",
           color: "#9ca3af",
+        }}
+      >
+        branch-beacon
+      </div>
+      <div
+        style={{
+          fontSize: 20,
+          color: "#6b7280",
           maxWidth: 900,
           textAlign: "center",
           lineHeight: 1.6,
