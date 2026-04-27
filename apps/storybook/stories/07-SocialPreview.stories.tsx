@@ -72,10 +72,9 @@ export const SocialCard: Story = {
           lineHeight: 1.6,
         }}
       >
-        A friendly little git branch indicator for the corner of your
-        development dashboard. Picks up your project's colors automatically,
-        with a risk-inverted palette so protected branches look alarming
-        and working branches feel safe.
+        A friendly little git branch indicator that lives in the corner
+        of your dev client. It's color-coded, so working branches feel
+        safe and protected ones stand out.
       </div>
     </div>
   ),
