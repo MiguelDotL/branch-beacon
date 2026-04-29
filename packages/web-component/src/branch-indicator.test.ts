@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { defineBranchIndicator } from "./branch-indicator.js";
+import { defineBranchBeacon } from "./branch-indicator.js";
 
-defineBranchIndicator();
+defineBranchBeacon();
 
 let fetchMock: ReturnType<typeof vi.fn>;
 
@@ -21,7 +21,7 @@ afterEach(() => {
 });
 
 const mount = (attrs: Record<string, string> = {}): HTMLElement => {
-  const el = document.createElement("branch-indicator");
+  const el = document.createElement("branch-beacon");
   for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
   document.body.replaceChildren(el);
   return el;
@@ -29,14 +29,14 @@ const mount = (attrs: Record<string, string> = {}): HTMLElement => {
 
 const flush = () => new Promise((r) => setTimeout(r, 0));
 
-describe("<branch-indicator>", () => {
+describe("<branch-beacon>", () => {
   const original = process.env.NODE_ENV;
   afterEach(() => {
     process.env.NODE_ENV = original;
   });
 
   it("registers on the customElements registry", () => {
-    expect(customElements.get("branch-indicator")).toBeTruthy();
+    expect(customElements.get("branch-beacon")).toBeTruthy();
   });
 
   it("renders the branch label in dev", async () => {
@@ -109,7 +109,7 @@ describe("<branch-indicator>", () => {
 
   it("renders content slotted into the icon slot", async () => {
     process.env.NODE_ENV = "development";
-    const el = document.createElement("branch-indicator");
+    const el = document.createElement("branch-beacon");
     const userIcon = document.createElement("span");
     userIcon.setAttribute("slot", "icon");
     userIcon.setAttribute("data-testid", "custom-icon");

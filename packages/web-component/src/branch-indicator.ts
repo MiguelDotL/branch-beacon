@@ -88,7 +88,7 @@ const parseColors = (
  *
  * Exposes `::part(marker)` and `::part(label)` for outside-Shadow styling.
  */
-export class BranchIndicatorElement extends HTMLElement {
+export class BranchBeaconElement extends HTMLElement {
   static get observedAttributes(): string[] {
     return [
       "endpoint",
@@ -278,12 +278,26 @@ export class BranchIndicatorElement extends HTMLElement {
   }
 }
 
+const ELEMENT_TAG_BEACON = "branch-beacon";
+
 /**
- * Register the `<branch-indicator>` custom element. Idempotent: re-calls
+ * Register the `<branch-beacon>` custom element. Idempotent: re-calls
  * are no-ops. Optionally pass a different tag name to avoid collisions
  * with another library that's already registered the default.
  */
+export const defineBranchBeacon = (tagName: string = ELEMENT_TAG_BEACON): void => {
+  if (customElements.get(tagName)) return;
+  customElements.define(tagName, BranchBeaconElement);
+};
+
+/**
+ * Register the `<branch-indicator>` custom element. Idempotent.
+ * @deprecated Use defineBranchBeacon instead. Will be removed in v1.0.
+ */
 export const defineBranchIndicator = (tagName: string = ELEMENT_TAG): void => {
   if (customElements.get(tagName)) return;
-  customElements.define(tagName, BranchIndicatorElement);
+  customElements.define(tagName, BranchBeaconElement);
 };
+
+/** @deprecated Use BranchBeaconElement instead. Will be removed in v1.0. */
+export { BranchBeaconElement as BranchIndicatorElement };

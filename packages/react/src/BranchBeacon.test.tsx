@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
-import { BranchIndicator } from "./BranchIndicator.js";
+import { BranchBeacon, BranchIndicator } from "./index.js";
 
 beforeEach(() => {
   vi.stubGlobal(
@@ -17,7 +17,7 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
-describe("<BranchIndicator />", () => {
+describe("<BranchBeacon />", () => {
   const original = process.env.NODE_ENV;
 
   afterEach(() => {
@@ -26,32 +26,32 @@ describe("<BranchIndicator />", () => {
 
   it("renders the branch name in dev", async () => {
     process.env.NODE_ENV = "development";
-    render(<BranchIndicator />);
+    render(<BranchBeacon />);
     expect(await screen.findByText("feat/integration")).toBeDefined();
   });
 
   it("hides in production by default", async () => {
     process.env.NODE_ENV = "production";
-    const { container } = render(<BranchIndicator />);
+    const { container } = render(<BranchBeacon />);
     // No need to wait — env-gate is checked synchronously before render path.
     expect(container.firstChild).toBeNull();
   });
 
   it("shows in production when enabled={true}", async () => {
     process.env.NODE_ENV = "production";
-    render(<BranchIndicator enabled />);
+    render(<BranchBeacon enabled />);
     expect(await screen.findByText("feat/integration")).toBeDefined();
   });
 
   it("hides in development when enabled={false}", () => {
     process.env.NODE_ENV = "development";
-    const { container } = render(<BranchIndicator enabled={false} />);
+    const { container } = render(<BranchBeacon enabled={false} />);
     expect(container.firstChild).toBeNull();
   });
 
   it("hides the label when iconOnly={true}", async () => {
     process.env.NODE_ENV = "development";
-    render(<BranchIndicator iconOnly />);
+    render(<BranchBeacon iconOnly />);
     await waitFor(() => {
       expect(screen.queryByText("feat/integration")).toBeNull();
     });
@@ -59,7 +59,7 @@ describe("<BranchIndicator />", () => {
 
   it("applies the resolved color via inline style", async () => {
     process.env.NODE_ENV = "development";
-    const { container } = render(<BranchIndicator />);
+    const { container } = render(<BranchBeacon />);
     await waitFor(() => screen.getByText("feat/integration"));
     const wrapper = container.querySelector("span");
     expect(wrapper?.getAttribute("style")).toMatch(/color:\s*var\(--branch-feat/);
@@ -67,7 +67,7 @@ describe("<BranchIndicator />", () => {
 
   it("applies drop-shadow filter when glow={true}", async () => {
     process.env.NODE_ENV = "development";
-    const { container } = render(<BranchIndicator shape="dot" glow />);
+    const { container } = render(<BranchBeacon shape="dot" glow />);
     await waitFor(() => screen.getByText("feat/integration"));
     expect(container.innerHTML).toContain("drop-shadow");
   });
@@ -75,7 +75,7 @@ describe("<BranchIndicator />", () => {
   it("renders the icon prop instead of the built-in shape", async () => {
     process.env.NODE_ENV = "development";
     render(
-      <BranchIndicator
+      <BranchBeacon
         icon={<span data-testid="custom-icon">★</span>}
         shape="svg"
       />,
@@ -84,5 +84,9 @@ describe("<BranchIndicator />", () => {
     expect(screen.getByTestId("custom-icon")).toBeDefined();
     // No SVG path from the default marker should be present.
     expect(document.querySelector("svg path")).toBeNull();
+  });
+
+  it("BranchIndicator alias resolves to BranchBeacon", () => {
+    expect(BranchIndicator).toBe(BranchBeacon);
   });
 });

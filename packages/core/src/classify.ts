@@ -3,7 +3,7 @@ import type { BranchKind } from "./types.js";
 /**
  * Classifier signature. Maps a branch name string to a `BranchKind`.
  * Pure function; no I/O. Consumers can override the default by passing
- * their own implementation to `BranchIndicator`'s `classify` prop.
+ * their own implementation to `BranchBeacon`'s `classify` prop.
  */
 export type Classifier = (branch: string) => BranchKind;
 
