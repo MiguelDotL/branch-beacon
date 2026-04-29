@@ -40,7 +40,7 @@ The dependency arrow is one-way: `react` and `web-component` both import from `c
 
 ## Code-quality bar
 
-Documented in [PLAN.md](./PLAN.md#engineering-quality-bar). The short version:
+The short version:
 
 - **No `any`, no non-null `!`, no `as` casts** without a comment explaining why.
 - **Pure functions are the default.** Side effects only in the React hook and the Web Component's `connectedCallback`.

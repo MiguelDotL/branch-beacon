@@ -244,7 +244,7 @@ app.get("/api/dev/git-branch", (_req, res) => {
 
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md). PRs welcome; the code-quality bar is documented in [PLAN.md](./PLAN.md#engineering-quality-bar).
+See [CONTRIBUTING.md](./CONTRIBUTING.md). PRs welcome.
 
 Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/) — see [CONTRIBUTING.md#commit-conventions](./CONTRIBUTING.md#commit-conventions) for the prefix list.
 
