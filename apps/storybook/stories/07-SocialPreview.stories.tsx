@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { BranchIndicator } from "branch-beacon";
+import { BranchBeacon } from "branch-beacon";
 import { mockBranch, sharedArgTypes } from "./_shared.js";
 
 /**
@@ -9,20 +9,20 @@ import { mockBranch, sharedArgTypes } from "./_shared.js";
  * PNG drops straight into Settings → Social preview.
  */
 const meta = {
-  title: "BranchIndicator/07 Social Preview",
-  component: BranchIndicator,
+  title: "BranchBeacon/07 Social Preview",
+  component: BranchBeacon,
   argTypes: sharedArgTypes,
   args: { shape: "svg", markerSize: 28, glow: true },
   parameters: {
     msw: { handlers: [mockBranch("feat/your-app")] },
     layout: "fullscreen",
   },
-} satisfies Meta<typeof BranchIndicator>;
+} satisfies Meta<typeof BranchBeacon>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const SocialCard = (args: ComponentProps<typeof BranchIndicator>) => (
+const SocialCard = (args: ComponentProps<typeof BranchBeacon>) => (
   <div
     data-social-card
     style={{
@@ -51,7 +51,7 @@ const SocialCard = (args: ComponentProps<typeof BranchIndicator>) => (
         gap: 24,
       }}
     >
-      <BranchIndicator {...args} />
+      <BranchBeacon {...args} />
     </div>
     <div
       style={{

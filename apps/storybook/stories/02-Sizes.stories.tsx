@@ -1,16 +1,16 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { BranchIndicator } from "branch-beacon";
+import { BranchBeacon } from "branch-beacon";
 import { mockBranch, sharedArgTypes } from "./_shared.js";
 
 const meta = {
-  title: "BranchIndicator/02 Sizes",
-  component: BranchIndicator,
+  title: "BranchBeacon/02 Sizes",
+  component: BranchBeacon,
   argTypes: sharedArgTypes,
   args: { shape: "led" },
   parameters: {
     msw: { handlers: [mockBranch("feat/sizes")] },
   },
-} satisfies Meta<typeof BranchIndicator>;
+} satisfies Meta<typeof BranchBeacon>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

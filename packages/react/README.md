@@ -5,9 +5,9 @@ A friendly little git branch indicator that lives in the corner of your dev clie
 ![branch-beacon in a header](https://raw.githubusercontent.com/MiguelDotL/branch-beacon/main/assets/hero-in-header.png)
 
 ```tsx
-import { BranchIndicator } from "branch-beacon";
+import { BranchBeacon } from "branch-beacon";
 
-<BranchIndicator />
+<BranchBeacon />
 ```
 
 That's it. The component fetches the current branch from `/api/dev/git-branch`, classifies it (`main` / `dev` / `feat/*` / `fix/*` / other), picks a color from the host project's CSS variables (or sensible fallbacks), and renders an inline SVG marker plus the branch name. In production builds, it renders nothing.
@@ -29,12 +29,12 @@ For the vanilla Web Component variant (Vue / Svelte / Astro / plain HTML): [`bra
 ## Quick start
 
 ```tsx
-import { BranchIndicator } from "branch-beacon";
+import { BranchBeacon } from "branch-beacon";
 
 export function Header() {
   return (
     <header>
-      <BranchIndicator />
+      <BranchBeacon />
     </header>
   );
 }
@@ -42,10 +42,12 @@ export function Header() {
 
 Defaults: SVG marker, default classifier, default colors, no polling, `/api/dev/git-branch` endpoint, hidden in production.
 
+> **Migration note:** `BranchIndicator` is still available as a deprecated alias and will be removed in v1.0.
+
 ## Customization
 
 ```tsx
-<BranchIndicator
+<BranchBeacon
   shape="dot"
   glow
   markerSize={10}
@@ -58,7 +60,7 @@ Defaults: SVG marker, default classifier, default colors, no polling, `/api/dev/
 `glow` works on every shape — `drop-shadow` follows the visible pixels, even on SVG. Tune the radius via `--branch-glow`. Pass any node to `icon` to override the default glyph entirely:
 
 ```tsx
-<BranchIndicator icon={<MyLogo width={12} height={12} />} />
+<BranchBeacon icon={<MyLogo width={12} height={12} />} />
 ```
 
 | `shape` | Render |
@@ -110,8 +112,8 @@ app.get("/api/dev/git-branch", (_req, res) => {
 Hidden by default — auto-detected via `process.env.NODE_ENV === "production"` (statically replaced at build time by every mainstream bundler).
 
 ```tsx
-<BranchIndicator enabled />          // force-show in production (staging dashboards, internal-only deploys)
-<BranchIndicator enabled={false} />  // force-hide
+<BranchBeacon enabled />          // force-show in production (staging dashboards, internal-only deploys)
+<BranchBeacon enabled={false} />  // force-hide
 ```
 
 ## License

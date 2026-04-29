@@ -80,7 +80,7 @@ git push origin v0.1.1
 
 Helpful issue reports include:
 
-- The minimal reproduction (a single `<BranchIndicator />` invocation, ideally in a CodeSandbox).
+- The minimal reproduction (a single `<BranchBeacon />` invocation, ideally in a CodeSandbox).
 - What you saw vs. what you expected.
 - Browser, React version, bundler.
 

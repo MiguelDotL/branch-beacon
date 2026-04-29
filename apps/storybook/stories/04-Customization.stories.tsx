@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { http, HttpResponse } from "msw";
-import { BranchIndicator } from "branch-beacon";
+import { BranchBeacon } from "branch-beacon";
 import { mockBranch, sharedArgTypes } from "./_shared.js";
 
 const meta = {
-  title: "BranchIndicator/04 Customization",
-  component: BranchIndicator,
+  title: "BranchBeacon/04 Customization",
+  component: BranchBeacon,
   argTypes: sharedArgTypes,
   args: { shape: "svg", markerSize: 10 },
-} satisfies Meta<typeof BranchIndicator>;
+} satisfies Meta<typeof BranchBeacon>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -107,7 +107,7 @@ export const HiddenInProduction: Story = {
         >
           Toggle NODE_ENV (currently {hidden ? "production" : "development"})
         </button>
-        <BranchIndicator {...args} />
+        <BranchBeacon {...args} />
         <small>(empty above when NODE_ENV is production unless `enabled` is set)</small>
       </div>
     );
@@ -129,6 +129,6 @@ export const ForceShowInProduction: Story = {
         process.env.NODE_ENV = original;
       };
     }, []);
-    return <BranchIndicator {...args} />;
+    return <BranchBeacon {...args} />;
   },
 };

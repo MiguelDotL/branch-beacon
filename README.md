@@ -5,9 +5,9 @@ A friendly little git branch indicator that lives in the corner of your dev clie
 ![branch-beacon in a header](./assets/hero-in-header.png)
 
 ```tsx
-import { BranchIndicator } from "branch-beacon";
+import { BranchBeacon } from "branch-beacon";
 
-<BranchIndicator />
+<BranchBeacon />
 ```
 
 That's it. The component fetches the current branch from `/api/dev/git-branch`, classifies it (`main` / `dev` / `feat/*` / `fix/*` / other), picks a color from the host project's CSS variables (or sensible fallbacks), and renders an inline SVG marker plus the branch name. In production builds, it renders nothing.
@@ -31,12 +31,12 @@ Backend: paste one of the [reference handlers](./examples) into your dev server.
 ## React
 
 ```tsx
-import { BranchIndicator } from "branch-beacon";
+import { BranchBeacon } from "branch-beacon";
 
 export function Header() {
   return (
     <header>
-      <BranchIndicator />
+      <BranchBeacon />
     </header>
   );
 }
@@ -44,10 +44,12 @@ export function Header() {
 
 Defaults: SVG marker, default classifier, default colors, no polling, `/api/dev/git-branch` endpoint, hidden in production.
 
+> **Migration note:** `BranchIndicator` is still available as a deprecated alias and will be removed in v1.0.
+
 ### Customization
 
 ```tsx
-<BranchIndicator
+<BranchBeacon
   shape="dot"
   glow
   markerSize={10}
@@ -64,7 +66,7 @@ Defaults: SVG marker, default classifier, default colors, no polling, `/api/dev/
 Pass any node to `icon` to override the default glyph entirely:
 
 ```tsx
-<BranchIndicator icon={<MyLogo width={12} height={12} />} />
+<BranchBeacon icon={<MyLogo width={12} height={12} />} />
 ```
 
 ### Marker shapes
@@ -120,25 +122,27 @@ For Vue, Svelte, Astro, or plain HTML:
   import "branch-beacon-element";
 </script>
 
-<branch-indicator></branch-indicator>
+<branch-beacon></branch-beacon>
 ```
+
+> **Migration note:** `<branch-indicator>` is no longer auto-registered. Call `defineBranchIndicator()` manually if you need the old tag name until v1.0.
 
 Attributes mirror the React props (kebab-case where camelCase would otherwise apply):
 
 ```html
-<branch-indicator
+<branch-beacon
   shape="led"
   marker-size="10"
   poll-ms="30000"
   enabled="true"
   colors='{"main":"#ff0066"}'
-></branch-indicator>
+></branch-beacon>
 ```
 
 Color overrides also via CSS custom properties on the host:
 
 ```css
-branch-indicator {
+branch-beacon {
   --branch-main: #ff0066;
   --branch-dev: #00ccff;
 }
@@ -147,8 +151,8 @@ branch-indicator {
 External styling via `::part`:
 
 ```css
-branch-indicator::part(marker) { /* ... */ }
-branch-indicator::part(label)  { /* ... */ }
+branch-beacon::part(marker) { /* ... */ }
+branch-beacon::part(label)  { /* ... */ }
 ```
 
 ## Theming
@@ -172,7 +176,7 @@ This means the indicator inherits whatever palette your project already uses:
 Same chain pattern for `dev`, `feat`, `fix`, `other`. Override per-kind via the `colors` prop:
 
 ```tsx
-<BranchIndicator colors={{ main: "var(--my-token)", feat: "#00ff00" }} />
+<BranchBeacon colors={{ main: "var(--my-token)", feat: "#00ff00" }} />
 ```
 
 Partial overrides only replace what you specify — keys you skip keep their default chain.
@@ -192,7 +196,7 @@ The default classifier maps:
 Drop in `strictClassify` (only literal `main`/`dev`/`feat/`/`fix/`) or `fuzzyClassify` (substring match: `production`/`staging`/`feature`/`patch`) if your conventions differ. Or pass your own:
 
 ```tsx
-<BranchIndicator classify={(branch) => branch.startsWith("epic/") ? "feat" : "other"} />
+<BranchBeacon classify={(branch) => branch.startsWith("epic/") ? "feat" : "other"} />
 ```
 
 ## Production
@@ -209,7 +213,7 @@ The indicator is a development tool — it should not render to end users. Detec
 Force the indicator to show in production (e.g. on internal staging dashboards) with `enabled={true}`:
 
 ```tsx
-<BranchIndicator enabled />
+<BranchBeacon enabled />
 ```
 
 When auto-hidden, the entire component subtree is skipped — no fetch is made.
