@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Removed
+
+- **Breaking:** dropped the deprecated `BranchIndicator` / `BranchIndicatorElement` / `BranchIndicatorProps` / `defineBranchIndicator` aliases that shipped alongside the `BranchBeacon` rename. Migrate imports to the canonical names.
+
 ### Added
 
 - `BranchBeacon` is now the canonical component name, matching the package name. `BranchIndicator` and `BranchIndicatorElement` remain exported as deprecated aliases (will be removed in v1.0). HTML tag `<branch-beacon>` replaces `<branch-indicator>` as the auto-registered tag on import; call `defineBranchIndicator()` manually if you need the old tag name.

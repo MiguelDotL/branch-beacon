@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import "branch-beacon-element"; // side-effect: registers <branch-indicator>
+import "branch-beacon-element"; // side-effect: registers <branch-beacon>
 import type { BranchKind, BranchShape } from "branch-beacon";
 import { mockBranch, sharedArgTypes } from "./_shared.js";
 
@@ -15,7 +15,7 @@ interface WebComponentArgs {
 }
 
 /**
- * Mounts the `<branch-indicator>` custom element and pipes Storybook
+ * Mounts the `<branch-beacon>` custom element and pipes Storybook
  * args to its attributes via a useEffect. Same controls as the React
  * component thanks to the shared argTypes — proves API parity.
  */
@@ -41,7 +41,7 @@ const WebComponentDemo: React.FC<WebComponentArgs> = (args) => {
   }, [args]);
 
   return (
-    <branch-indicator
+    <branch-beacon
       ref={ref as React.Ref<HTMLElement>}
       style={{
         fontFamily:
@@ -55,12 +55,12 @@ const WebComponentDemo: React.FC<WebComponentArgs> = (args) => {
 };
 
 // React 19's JSX runtime nests the IntrinsicElements interface inside the
-// "react" module's JSX namespace. Augmenting it here lets <branch-indicator>
+// "react" module's JSX namespace. Augmenting it here lets <branch-beacon>
 // type-check without polluting the global JSX namespace.
 declare module "react" {
   namespace JSX {
     interface IntrinsicElements {
-      "branch-indicator": React.DetailedHTMLProps<
+      "branch-beacon": React.DetailedHTMLProps<
         React.HTMLAttributes<HTMLElement>,
         HTMLElement
       >;
@@ -69,7 +69,7 @@ declare module "react" {
 }
 
 const meta = {
-  title: "WebComponent/<branch-indicator>",
+  title: "WebComponent/<branch-beacon>",
   component: WebComponentDemo,
   argTypes: sharedArgTypes,
   args: {

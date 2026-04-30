@@ -12,7 +12,6 @@ import {
 const DEFAULT_ENDPOINT = "/api/dev/git-branch";
 const DEFAULT_SHAPE: BranchShape = "svg";
 const DEFAULT_MARKER_SIZE = 8;
-const ELEMENT_TAG = "branch-indicator";
 
 const SVG_VIEWBOX = "0 0 16 16";
 const SVG_PATH =
@@ -58,7 +57,7 @@ const parseColors = (
 };
 
 /**
- * `<branch-indicator>` — vanilla Web Component twin of the React component.
+ * `<branch-beacon>` — vanilla Web Component twin of the React component.
  *
  * Mirrors the React API as HTML attributes (kebab-case where camelCase
  * would otherwise be used). Same data flow, same color resolution, same
@@ -78,12 +77,12 @@ const parseColors = (
  * replace the built-in marker entirely. `shape` is ignored in that case;
  * `glow` and color theming still apply.
  *
- *   <branch-indicator>
+ *   <branch-beacon>
  *     <svg slot="icon" viewBox="0 0 16 16" fill="currentColor">…</svg>
- *   </branch-indicator>
+ *   </branch-beacon>
  *
  * Color theming via CSS custom properties on the host:
- *   `branch-indicator { --branch-main: #ff0066; }` flows through the
+ *   `branch-beacon { --branch-main: #ff0066; }` flows through the
  *   default color chain without any JS configuration.
  *
  * Exposes `::part(marker)` and `::part(label)` for outside-Shadow styling.
@@ -289,15 +288,3 @@ export const defineBranchBeacon = (tagName: string = ELEMENT_TAG_BEACON): void =
   if (customElements.get(tagName)) return;
   customElements.define(tagName, BranchBeaconElement);
 };
-
-/**
- * Register the `<branch-indicator>` custom element. Idempotent.
- * @deprecated Use defineBranchBeacon instead. Will be removed in v1.0.
- */
-export const defineBranchIndicator = (tagName: string = ELEMENT_TAG): void => {
-  if (customElements.get(tagName)) return;
-  customElements.define(tagName, BranchBeaconElement);
-};
-
-/** @deprecated Use BranchBeaconElement instead. Will be removed in v1.0. */
-export { BranchBeaconElement as BranchIndicatorElement };

@@ -42,8 +42,6 @@ export function Header() {
 
 Defaults: SVG marker, default classifier, default colors, no polling, `/api/dev/git-branch` endpoint, hidden in production.
 
-> **Migration note:** `BranchIndicator` is still available as a deprecated alias and will be removed in v1.0.
-
 ## Customization
 
 ```tsx
