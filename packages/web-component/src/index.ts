@@ -1,19 +1,14 @@
 // Public surface for branch-beacon-element.
 //
 // Side effect: importing this module auto-registers `<branch-beacon>`.
-// To register under a custom tag name (e.g. the legacy `<branch-indicator>`),
-// import `defineBranchBeacon` or `defineBranchIndicator` and call it
-// explicitly with the desired tag INSTEAD of importing this module directly.
+// To register under a custom tag name, import `defineBranchBeacon` and
+// call it explicitly with the desired tag INSTEAD of importing this
+// module directly.
 
 export {
   BranchBeaconElement,
   defineBranchBeacon,
 } from "./branch-indicator.js";
-
-/** @deprecated Use BranchBeaconElement instead. Will be removed in v1.0. */
-export { BranchIndicatorElement } from "./branch-indicator.js";
-/** @deprecated Use defineBranchBeacon instead. Will be removed in v1.0. */
-export { defineBranchIndicator } from "./branch-indicator.js";
 
 import { defineBranchBeacon } from "./branch-indicator.js";
 

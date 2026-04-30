@@ -3,13 +3,9 @@
 // signatures is a major.
 
 export { BranchBeacon } from "./BranchBeacon.js";
-/** @deprecated Use BranchBeacon instead. Will be removed in v1.0. */
-export { BranchBeacon as BranchIndicator } from "./BranchBeacon.js";
 export { useBranchInfo } from "./useBranchInfo.js";
 
 export type { BranchBeaconProps, UseBranchInfoOptions, BranchInfoResult } from "./types.js";
-/** @deprecated Use BranchBeaconProps instead. Will be removed in v1.0. */
-export type { BranchBeaconProps as BranchIndicatorProps } from "./types.js";
 
 // Re-exports from @branch-beacon/core so consumers don't need a second
 // install for the helpers and types most directly tied to the component.

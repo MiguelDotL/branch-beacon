@@ -12,8 +12,6 @@ A friendly little git branch indicator that lives in the corner of your dev clie
 <branch-beacon></branch-beacon>
 ```
 
-> **Migration note:** `<branch-indicator>` is no longer auto-registered. Call `defineBranchIndicator()` manually if you need the old tag name until v1.0.
-
 That's it. The element fetches the current branch from `/api/dev/git-branch`, classifies it (`main` / `dev` / `feat/*` / `fix/*` / other), picks a color from the host project's CSS variables (or sensible fallbacks), and renders a Shadow-DOM-isolated indicator. In production builds, it renders nothing.
 
 ## Install

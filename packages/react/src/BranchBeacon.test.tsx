@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
-import { BranchBeacon, BranchIndicator } from "./index.js";
+import { BranchBeacon } from "./index.js";
 
 beforeEach(() => {
   vi.stubGlobal(
@@ -84,9 +84,5 @@ describe("<BranchBeacon />", () => {
     expect(screen.getByTestId("custom-icon")).toBeDefined();
     // No SVG path from the default marker should be present.
     expect(document.querySelector("svg path")).toBeNull();
-  });
-
-  it("BranchIndicator alias resolves to BranchBeacon", () => {
-    expect(BranchIndicator).toBe(BranchBeacon);
   });
 });
