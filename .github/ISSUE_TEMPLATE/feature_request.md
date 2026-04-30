@@ -14,7 +14,7 @@ apart from feature work because the indicator paints both as `other`." -->
 <!-- What you'd like the package to do. Code examples welcome. -->
 
 ```tsx
-<BranchIndicator newProp={...} />
+<BranchBeacon newProp={...} />
 ```
 
 ## Alternatives considered

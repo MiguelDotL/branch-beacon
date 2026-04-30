@@ -1,17 +1,17 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { BranchIndicator } from "branch-beacon";
+import { BranchBeacon } from "branch-beacon";
 import { mockBranch, sharedArgTypes } from "./_shared.js";
 
 const meta = {
-  title: "BranchIndicator/05 Integration",
-  component: BranchIndicator,
+  title: "BranchBeacon/05 Integration",
+  component: BranchBeacon,
   argTypes: sharedArgTypes,
   args: { shape: "svg", markerSize: 10 },
   parameters: {
     msw: { handlers: [mockBranch("feat/realistic")] },
     layout: "fullscreen",
   },
-} satisfies Meta<typeof BranchIndicator>;
+} satisfies Meta<typeof BranchBeacon>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -76,7 +76,7 @@ const SidebarShell: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 export const InHeader: Story = {
   render: (args) => (
     <HeaderShell>
-      <BranchIndicator {...args} />
+      <BranchBeacon {...args} />
     </HeaderShell>
   ),
 };
@@ -84,7 +84,7 @@ export const InHeader: Story = {
 export const InSidebar: Story = {
   render: (args) => (
     <SidebarShell>
-      <BranchIndicator {...args} />
+      <BranchBeacon {...args} />
     </SidebarShell>
   ),
 };
@@ -112,7 +112,7 @@ export const InsideBadge: Story = {
       }}
     >
       Branch:&nbsp;
-      <BranchIndicator {...args} />
+      <BranchBeacon {...args} />
     </span>
   ),
 };

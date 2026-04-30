@@ -4,7 +4,7 @@ import { useMemo, type CSSProperties } from "react";
 import { colorFor, shouldRender } from "@branch-beacon/core";
 import { useBranchInfo } from "./useBranchInfo.js";
 import { renderMarker } from "./markers.js";
-import type { BranchIndicatorProps } from "./types.js";
+import type { BranchBeaconProps } from "./types.js";
 
 const DEFAULT_SHAPE = "svg" as const;
 const DEFAULT_MARKER_SIZE = 8;
@@ -20,10 +20,10 @@ const GLOW_FILTER = "drop-shadow(0 0 var(--branch-glow, 8px) currentColor)";
  *
  * Most usage is one line:
  * ```tsx
- * <BranchIndicator />
+ * <BranchBeacon />
  * ```
  */
-export const BranchIndicator = (props: BranchIndicatorProps) => {
+export const BranchBeacon = (props: BranchBeaconProps) => {
   const {
     endpoint,
     shape = DEFAULT_SHAPE,

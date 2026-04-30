@@ -38,7 +38,7 @@ const isSameState = (a: InternalState, b: InternalState): boolean =>
  * don't trigger re-renders.
  *
  * Use this directly to build a custom UI on top of the same data the
- * `<BranchIndicator />` component uses.
+ * `<BranchBeacon />` component uses.
  */
 export const useBranchInfo = (
   options: UseBranchInfoOptions = {},

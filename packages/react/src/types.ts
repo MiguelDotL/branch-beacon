@@ -2,17 +2,17 @@ import type { CSSProperties, ReactNode } from "react";
 import type { BranchKind, BranchShape, Classifier } from "@branch-beacon/core";
 
 /**
- * Props for the {@link BranchIndicator} component.
+ * Props for the {@link BranchBeacon} component.
  *
  * The most common usage is zero-config:
  * ```tsx
- * <BranchIndicator />
+ * <BranchBeacon />
  * ```
  *
  * Defaults: SVG marker, default classifier, default colors, no polling,
  * `/api/dev/git-branch` endpoint, hidden in production.
  */
-export interface BranchIndicatorProps {
+export interface BranchBeaconProps {
   /**
    * API endpoint that returns `{ branch: string | null }` JSON.
    * @default "/api/dev/git-branch"
@@ -29,7 +29,7 @@ export interface BranchIndicatorProps {
    * - `"pill"` — wraps the label in a tinted background pill
    * - `"none"` — label only, no marker
    *
-   * Ignored when {@link BranchIndicatorProps.icon} is provided.
+   * Ignored when {@link BranchBeaconProps.icon} is provided.
    *
    * @default "svg"
    */
@@ -64,7 +64,7 @@ export interface BranchIndicatorProps {
    *
    * @example
    * ```tsx
-   * <BranchIndicator icon={<MyLogo width={12} height={12} />} />
+   * <BranchBeacon icon={<MyLogo width={12} height={12} />} />
    * ```
    */
   icon?: ReactNode;
@@ -84,7 +84,7 @@ export interface BranchIndicatorProps {
    *
    * @example
    * ```tsx
-   * <BranchIndicator colors={{ main: "var(--my-danger)" }} />
+   * <BranchBeacon colors={{ main: "var(--my-danger)" }} />
    * ```
    */
   colors?: Partial<Record<BranchKind, string>>;
