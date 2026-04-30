@@ -15,12 +15,12 @@ labels: bug
 ## Minimal reproduction
 
 <!--
-Ideally a CodeSandbox / StackBlitz with a single `<BranchIndicator />`
+Ideally a CodeSandbox / StackBlitz with a single `<BranchBeacon />`
 invocation, or the smallest possible snippet that triggers the bug.
 -->
 
 ```tsx
-<BranchIndicator />
+<BranchBeacon />
 ```
 
 ## Environment
@@ -33,5 +33,5 @@ invocation, or the smallest possible snippet that triggers the bug.
 ## "It doesn't show up" checklist
 
 - [ ] `process.env.NODE_ENV` is `"development"` (not `"production"`)
-- [ ] Tried `<BranchIndicator enabled />` to bypass the production gate
+- [ ] Tried `<BranchBeacon enabled />` to bypass the production gate
 - [ ] The `/api/dev/git-branch` endpoint returns `{ "branch": "..." }` (not `null` or 5xx)
