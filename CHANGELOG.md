@@ -7,23 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Removed
-
-- **Breaking:** dropped the deprecated `BranchIndicator` / `BranchIndicatorElement` / `BranchIndicatorProps` / `defineBranchIndicator` aliases that shipped alongside the `BranchBeacon` rename. Migrate imports to the canonical names.
-
-### Added
-
-- `BranchBeacon` is now the canonical component name, matching the package name. `BranchIndicator` and `BranchIndicatorElement` remain exported as deprecated aliases (will be removed in v1.0). HTML tag `<branch-beacon>` replaces `<branch-indicator>` as the auto-registered tag on import; call `defineBranchIndicator()` manually if you need the old tag name.
+## [1.0.0] — 2026-04-30 — Stable API
 
 ### Changed
 
-- README intros and npm package descriptions rewritten to match the social-preview voice ("A friendly little git branch indicator that lives in the corner of your dev client. Color-coded so working branches feel safe and protected ones stand out."). Repo-only update — the npm descriptions will refresh on the next release.
+- **Component renamed: `BranchIndicator` → `BranchBeacon`** (matching the package name). Migrate React imports from `BranchIndicator` / `BranchIndicatorProps` to `BranchBeacon` / `BranchBeaconProps`. Migrate web-component usage from `<branch-indicator>` and `defineBranchIndicator()` to `<branch-beacon>` and `defineBranchBeacon()`.
 - `defaultClassify` now recognizes `development` and `staging` as `dev`-kind alongside the existing `dev` / `develop`. Behavior change for anyone using these literal branch names — the indicator's color shifts from gray (`other`) to amber (`dev`). `strictClassify` and `fuzzyClassify` are unchanged.
-- README links Conventional Commits (already documented in `CONTRIBUTING.md`) from the Contributing section, and embeds a glow-modifier demo image in the React Customization section.
+- README intros and npm package descriptions rewritten to a warmer voice: "A friendly little git branch indicator that lives in the corner of your dev client. Color-coded so working branches feel safe and protected ones stand out."
+
+### Removed
+
+- The deprecated `BranchIndicator` / `BranchIndicatorElement` / `BranchIndicatorProps` / `defineBranchIndicator` aliases that briefly shipped between the rename and v1.0. Use the canonical names listed above.
 
 ### Added
 
 - Issue templates (`bug_report.md`, `feature_request.md`) under `.github/ISSUE_TEMPLATE/` and a pull-request template at `.github/pull_request_template.md` to streamline contributor reports.
+- README links Conventional Commits from the Contributing section and embeds a glow-modifier demo image in the React Customization section.
 
 ## [0.1.2] — Extensibility (glow modifier, custom icons, led redesign)
 
@@ -59,7 +58,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Reference backend handlers for Express, FastAPI, Flask, and Go.
 - Storybook with every prop wired to a control.
 
-[Unreleased]: https://github.com/MiguelDotL/branch-beacon/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/MiguelDotL/branch-beacon/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/MiguelDotL/branch-beacon/releases/tag/v1.0.0
 [0.1.2]: https://github.com/MiguelDotL/branch-beacon/releases/tag/v0.1.2
 [0.1.1]: https://github.com/MiguelDotL/branch-beacon/releases/tag/v0.1.1
 [0.1.0]: https://github.com/MiguelDotL/branch-beacon/releases/tag/v0.1.0

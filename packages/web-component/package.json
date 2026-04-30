@@ -1,6 +1,6 @@
 {
   "name": "branch-beacon-element",
-  "version": "0.1.2",
+  "version": "1.0.0",
   "description": "A friendly little git branch indicator for the corner of your dev client. Color-coded so working branches feel safe and protected ones stand out. Vanilla Web Component for any framework or plain HTML.",
   "keywords": [
     "git",
