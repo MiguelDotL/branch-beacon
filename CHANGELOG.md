@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - README intros and npm package descriptions rewritten to match the social-preview voice ("A friendly little git branch indicator that lives in the corner of your dev client. Color-coded so working branches feel safe and protected ones stand out."). Repo-only update — the npm descriptions will refresh on the next release.
+- `defaultClassify` now recognizes `development` and `staging` as `dev`-kind alongside the existing `dev` / `develop`. Behavior change for anyone using these literal branch names — the indicator's color shifts from gray (`other`) to amber (`dev`). `strictClassify` and `fuzzyClassify` are unchanged.
+- README links Conventional Commits (already documented in `CONTRIBUTING.md`) from the Contributing section, and embeds a glow-modifier demo image in the React Customization section.
+
+### Added
+
+- Issue templates (`bug_report.md`, `feature_request.md`) under `.github/ISSUE_TEMPLATE/` and a pull-request template at `.github/pull_request_template.md` to streamline contributor reports.
 
 ## [0.1.2] — Extensibility (glow modifier, custom icons, led redesign)
 
