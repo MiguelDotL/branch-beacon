@@ -275,7 +275,7 @@ app.get("/api/dev/git-branch", (_req, res) => {
 
 ## Live demo
 
-[branch-beacon Storybook](https://miguellozano.github.io/branch-beacon/) — every shape, size, color, and customization knob, fully interactive.
+[branch-beacon Storybook](https://migueldotl.github.io/branch-beacon/) — every shape, size, color, and customization knob, fully interactive.
 
 ## Contributing
 
