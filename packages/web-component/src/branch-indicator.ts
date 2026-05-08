@@ -12,6 +12,7 @@ import {
 const DEFAULT_ENDPOINT = "/api/dev/git-branch";
 const DEFAULT_SHAPE: BranchShape = "svg";
 const DEFAULT_MARKER_SIZE = 8;
+const DEFAULT_COMPACT_BELOW = 80;
 
 const SVG_VIEWBOX = "0 0 16 16";
 const SVG_PATH =
@@ -56,6 +57,19 @@ const parseColors = (
   return undefined;
 };
 
+// Parse the `compact-below` attribute. Mirrors the React prop semantics:
+//   - absent  → default threshold (enabled)
+//   - "false" → disabled
+//   - number  → custom threshold
+//   - garbage → default threshold (silent fallback, never throws)
+const parseCompactBelow = (value: string | null): number | false => {
+  if (value === null) return DEFAULT_COMPACT_BELOW;
+  if (value === "false") return false;
+  const n = Number(value);
+  if (Number.isFinite(n) && n > 0) return n;
+  return DEFAULT_COMPACT_BELOW;
+};
+
 /**
  * `<branch-beacon>` — vanilla Web Component twin of the React component.
  *
@@ -72,6 +86,14 @@ const parseColors = (
  *   - `poll-ms`         (default: `0`)
  *   - `enabled`         (`"true"` | `"false"`; default: auto-hide in production)
  *   - `colors`          (JSON-encoded `{ main, dev, feat, fix, other }`)
+ *   - `compact-below`   (number px, default `80`; `"false"` disables — collapses to icon-only when the watched container is narrower)
+ *
+ * Container override (escape hatch): assign an `Element` to the
+ * `container` JS property to drive compact mode off something other
+ * than `parentElement` (custom elements have no React-style refs):
+ *
+ *   const beacon = document.querySelector("branch-beacon");
+ *   beacon.container = document.querySelector(".sidebar");
  *
  * Custom icon escape hatch: project content into the `icon` slot to
  * replace the built-in marker entirely. `shape` is ignored in that case;
@@ -98,6 +120,7 @@ export class BranchBeaconElement extends HTMLElement {
       "poll-ms",
       "enabled",
       "colors",
+      "compact-below",
     ];
   }
 
@@ -115,6 +138,31 @@ export class BranchBeaconElement extends HTMLElement {
   private markerDefault: HTMLSpanElement;
   private label: HTMLSpanElement;
   private styleEl: HTMLStyleElement;
+
+  // Compact-mode state. `compact` is recomputed by the resize observer
+  // and consumed by render(); `_container` is the override target (set
+  // imperatively, since custom elements have no ref equivalent).
+  private compact: boolean = false;
+  private resizeObserver: ResizeObserver | null = null;
+  private observedTarget: Element | null = null;
+  private _container: Element | null = null;
+
+  /**
+   * Override the element whose width drives compact mode. Defaults to
+   * `this.parentElement`. Set imperatively from JS:
+   *
+   *   beacon.container = someElement;
+   *
+   * Pass `null` to revert to the default.
+   */
+  get container(): Element | null {
+    return this._container;
+  }
+  set container(value: Element | null) {
+    if (this._container === value) return;
+    this._container = value;
+    if (this.isConnected) this.applyResizeObserver();
+  }
 
   constructor() {
     super();
@@ -164,15 +212,76 @@ export class BranchBeaconElement extends HTMLElement {
 
   connectedCallback(): void {
     this.refresh();
+    this.applyResizeObserver();
   }
 
   disconnectedCallback(): void {
     this.stopWatcher?.();
     this.stopWatcher = null;
+    this.teardownResizeObserver();
   }
 
-  attributeChangedCallback(): void {
-    if (this.isConnected) this.refresh();
+  attributeChangedCallback(name: string): void {
+    if (!this.isConnected) return;
+    this.refresh();
+    if (name === "compact-below" || name === "enabled") {
+      this.applyResizeObserver();
+    }
+  }
+
+  // Set up (or tear down) the parent-width observer based on current
+  // attributes. Skips work entirely when disabled, hidden in production,
+  // or running in a runtime without ResizeObserver — same "cheap when
+  // unused" contract as the React side.
+  private applyResizeObserver(): void {
+    this.teardownResizeObserver();
+
+    const compactBelow = parseCompactBelow(this.getAttribute("compact-below"));
+    if (compactBelow === false) {
+      if (this.compact) {
+        this.compact = false;
+        if (this.branch !== null) this.render();
+      }
+      return;
+    }
+    if (typeof ResizeObserver === "undefined") return;
+
+    const enabled = parseEnabled(this.getAttribute("enabled"));
+    if (!shouldRender(enabled)) return;
+
+    const target = this._container ?? this.parentElement;
+    if (!target) return;
+
+    const evaluate = (width: number) => {
+      if (width <= 0) return;
+      const next = width < compactBelow;
+      if (this.compact === next) return;
+      this.compact = next;
+      if (this.branch !== null) this.render();
+    };
+
+    // Synchronous read so the first render reflects the parent's actual
+    // width — no flash of full mode in already-narrow containers.
+    evaluate(target.getBoundingClientRect().width);
+
+    this.observedTarget = target;
+    this.resizeObserver = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const box = entry.contentBoxSize?.[0];
+        const width = box ? box.inlineSize : entry.contentRect.width;
+        evaluate(width);
+      }
+    });
+    this.resizeObserver.observe(target);
+  }
+
+  private teardownResizeObserver(): void {
+    if (this.resizeObserver && this.observedTarget) {
+      this.resizeObserver.unobserve(this.observedTarget);
+    }
+    this.resizeObserver?.disconnect();
+    this.resizeObserver = null;
+    this.observedTarget = null;
   }
 
   private refresh(): void {
@@ -215,10 +324,20 @@ export class BranchBeaconElement extends HTMLElement {
     const glow = this.hasAttribute("glow") || shape === "led";
     const colors = parseColors(this.getAttribute("colors"));
 
+    // Compact-mode equivalents of the React logic. If the user picked
+    // shape="none" (label-only) AND didn't slot a custom icon, fall back
+    // to svg so the indicator stays visible when the label is hidden.
+    const hasSlottedIcon = this.querySelector(':scope > [slot="icon"]') !== null;
+    const effectiveIconOnly = iconOnly || this.compact;
+    const effectiveShape: BranchShape =
+      this.compact && shape === "none" && !hasSlottedIcon
+        ? DEFAULT_SHAPE
+        : shape;
+
     this.style.color = colorFor(this.kind, colors);
     this.title = `Current git branch: ${this.branch}`;
 
-    this.wrapper.classList.toggle("pill", shape === "pill");
+    this.wrapper.classList.toggle("pill", effectiveShape === "pill");
 
     // Glow goes on markerHost so it covers BOTH the fallback default
     // marker AND any slotted custom icon — uniform behavior.
@@ -227,10 +346,10 @@ export class BranchBeaconElement extends HTMLElement {
     // Reset and re-render the default marker (the slot fallback).
     this.markerDefault.replaceChildren();
     this.markerDefault.removeAttribute("style");
-    this.renderDefaultMarker(shape, markerSize);
+    this.renderDefaultMarker(effectiveShape, markerSize);
 
-    this.label.textContent = iconOnly ? "" : this.branch;
-    this.label.style.display = iconOnly ? "none" : "";
+    this.label.textContent = effectiveIconOnly ? "" : this.branch;
+    this.label.style.display = effectiveIconOnly ? "none" : "";
   }
 
   private renderDefaultMarker(shape: BranchShape, size: number): void {

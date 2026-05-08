@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Container-width-aware compact mode.** The beacon now observes its container's width via `ResizeObserver` and collapses to a marker-only indicator when the container narrows below the threshold. Enabled by default at `80px`. Set `compactBelow` to a custom number to change the breakpoint, or `false` to opt out. SSR-safe (no `ResizeObserver` access at module/render time), zero observer cost when disabled.
+  - React: new `compactBelow?: number | false` and `containerRef?: RefObject<HTMLElement>` props on `BranchBeacon`.
+  - Web component: new `compact-below` attribute and imperative `container` property on `BranchBeaconElement`.
+  - In compact mode, `shape="none"` without a custom `icon` falls back to the default `svg` marker so the indicator stays visible when the label is hidden.
+
 ## [1.0.0] — 2026-04-30 — Stable API
 
 ### Changed
