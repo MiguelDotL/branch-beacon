@@ -94,8 +94,35 @@ Full prop list:
 | `classify` | `(branch: string) => BranchKind` | `defaultClassify` | Or use `strictClassify` / `fuzzyClassify` |
 | `pollMs` | `number` | `0` | `0` = fetch once on mount |
 | `enabled` | `boolean \| undefined` | `undefined` | Visibility override (see [Production](#production)) |
+| `compactBelow` | `number \| false` | `80` | Container-width threshold (px) below which the beacon collapses to icon-only. `false` opts out |
+| `containerRef` | `RefObject<HTMLElement>` | — | Override the element observed for compact-mode width (defaults to `parentElement`) |
 | `className` | `string` | — | Wrapper class |
 | `style` | `CSSProperties` | — | Inline style override |
+
+### Compact mode (container-width-aware)
+
+Drop the beacon into a collapsing sidebar with zero configuration — when the parent narrows past `compactBelow` (default `80px`) the label hides and only the marker remains. When the container has room again, the label comes back.
+
+```tsx
+// Just works in a sidebar that collapses to icons:
+<BranchBeacon />
+
+// Custom threshold:
+<BranchBeacon compactBelow={120} />
+
+// Disable entirely:
+<BranchBeacon compactBelow={false} />
+
+// Observe a different element (fixed-width wrappers, grandparent, etc.):
+const sidebarRef = useRef<HTMLElement>(null);
+<aside ref={sidebarRef}>
+  <div style={{ width: 600 }}>
+    <BranchBeacon containerRef={sidebarRef} />
+  </div>
+</aside>
+```
+
+In compact mode, if `shape="none"` and no custom `icon` is supplied, the beacon falls back to the default `svg` marker so it never disappears entirely. The web component exposes the same behavior via the `compact-below` attribute and an imperative `container` property.
 
 ### Headless hook
 
@@ -132,7 +159,15 @@ Attributes mirror the React props (kebab-case where camelCase would otherwise ap
   poll-ms="30000"
   enabled="true"
   colors='{"main":"#ff0066"}'
+  compact-below="80"
 ></branch-beacon>
+```
+
+The `compact-below` attribute (number px, default `80`, or `"false"` to disable) collapses the beacon to icon-only when its container narrows past the threshold. To observe an element other than `parentElement`, set the `container` property imperatively from JS:
+
+```js
+const beacon = document.querySelector("branch-beacon");
+beacon.container = document.querySelector(".sidebar");
 ```
 
 Color overrides also via CSS custom properties on the host:
@@ -240,7 +275,7 @@ app.get("/api/dev/git-branch", (_req, res) => {
 
 ## Live demo
 
-[branch-beacon Storybook](https://miguellozano.github.io/branch-beacon/) — every shape, size, color, and customization knob, fully interactive.
+[branch-beacon Storybook](https://migueldotl.github.io/branch-beacon/) — every shape, size, color, and customization knob, fully interactive.
 
 ## Contributing
 

@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import type { CSSProperties, ReactNode, RefObject } from "react";
 import type { BranchKind, BranchShape, Classifier } from "@branch-beacon/core";
 
 /**
@@ -117,6 +117,39 @@ export interface BranchBeaconProps {
    * disable the indicator without removing the import.
    */
   enabled?: boolean;
+
+  /**
+   * Container-width-aware compact mode. When the watched container's
+   * content-box width drops below this many pixels, the beacon collapses
+   * to a marker-only indicator (label hidden) so it survives a sidebar
+   * collapsing to icons or a toolbar tightening up.
+   *
+   * Behavior:
+   * - `number` (default `80`) — observe and collapse below the threshold.
+   * - `false` — opt out entirely; no `ResizeObserver` is created.
+   *
+   * The watched element defaults to the beacon's own `parentElement`.
+   * Pass {@link BranchBeaconProps.containerRef} to observe a different
+   * ancestor (e.g. a fixed-width wrapper or grandparent).
+   *
+   * In compact mode, if `shape === "none"` and no custom `icon` is
+   * supplied, the marker falls back to the default `svg` shape so the
+   * indicator never disappears entirely.
+   *
+   * @default 80
+   */
+  compactBelow?: number | false;
+
+  /**
+   * Escape hatch: a ref to the element whose width should drive compact
+   * mode. Use when the natural `parentElement` is the wrong thing to
+   * observe (fixed-width wrappers, overflow-clipped containers, or when
+   * a grandparent is the meaningful breakpoint).
+   *
+   * Defaults to the beacon's own `parentElement`. Has no effect when
+   * `compactBelow` is `false`.
+   */
+  containerRef?: RefObject<HTMLElement | null>;
 
   /**
    * Wrapper class for typography, spacing, or responsive visibility.

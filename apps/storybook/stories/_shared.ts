@@ -77,6 +77,21 @@ export const sharedArgTypes = {
     },
     description: "Branch-name classifier preset.",
   },
+  compactBelow: {
+    control: "select" as const,
+    options: ["default (80)", "120", "200", "off"],
+    mapping: {
+      "default (80)": 80,
+      "120": 120,
+      "200": 200,
+      off: false,
+    },
+    description:
+      "Compact mode threshold (px). Below this width, the beacon collapses to icon-only. 'off' disables.",
+  },
+  containerRef: {
+    table: { disable: true },
+  },
   className: {
     table: { disable: true },
   },
